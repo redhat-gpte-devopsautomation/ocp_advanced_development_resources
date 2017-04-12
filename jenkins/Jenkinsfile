@@ -11,7 +11,7 @@ node('maven') {
   stage('Checkout Source') {
     // Get Source Code from SCM (Git) as configured in the Jenkins Project
     // Next line for inline script, "checkout scm" for Jenkinsfile from Gogs
-    //git 'http://gogs.gogs.svc.cluster.local:3000/CICDLabs/openshift-tasks.git'
+    //git 'http://gogs.xyz-gogs.svc.cluster.local:3000/CICDLabs/openshift-tasks.git'
     checkout scm
   }
 
@@ -43,21 +43,22 @@ node('maven') {
   // Also update the Gogs project openshift-tasks-ocp by editing the .s2i/environment file. This file needs to have a line
   //   WAR_FILE_LOCATION=<actual URL of the war file in nexus>
   // It is also a good idea to add another line like "BUILD_NUMBER=${BUILD_NUMBER}" to the environment file. Otherwise the
-  // update to Gig/Gogs will fail in case the version number didn't change. ${BUILD_NUMBER} is one of the Jenkins built-in
+  // push to Gig/Gogs will fail in case the version number didn't change. ${BUILD_NUMBER} is one of the Jenkins built-in
   // variables.
   stage('Publish to Nexus') {
     // TBD
   }
 
   // Build the OpenShift Image in OpenShift. Make sure to use the build configuration pointing to openshift-tasks-ocp
-  // for the .s2i/bin/assmemble script to just get the war file from the location in the .s2i/environment file.
+  // for the .s2i/bin/assemble script to retrieve the war file from the location in the .s2i/environment file.
   // Also tag the image with "TestingCandidate-${version}" - e.g. TestingCandidate-1.5
   stage('Build OpenShift Image') {
     // TBD
   }
 
   // Deploy the built image to the Development Environment. Pay close attention to WHICH image you are deploying.
-  // Make sure it is the one you just tagged in the previous step.
+  // Make sure it is the one you just tagged in the previous step. You may need to patch the deployment configuration
+  // of your application.
   stage('Deploy to Dev') {
     // TBD
   }
@@ -72,10 +73,11 @@ node('maven') {
   // -------------------------------------
   // Next two stages could be one.
   // Make sure to deploy the right version. If green is active then deploy blue, and vice versa.
+  // You will need to figure out which application is active and set the target to the other.
   stage('Prep Production Deployment') {
     // TBD
   }
-  // Deploy the ProdReady-${version} image. Make sure this is the actual image deployed!
+  // Deploy the ProdReady-${version} image. Make sure this is the actual tagged image deployed!
   // Do not activate the new version yet.
   stage('Deploy new Version') {
     // TBD
@@ -89,6 +91,7 @@ node('maven') {
 }
 
 // Convenience Functions to read variables from the pom.xml
+// Do not change anything below this line.
 def getVersionFromPom(pom) {
   def matcher = readFile(pom) =~ '<version>(.+)</version>'
   matcher ? matcher[0][1] : null
