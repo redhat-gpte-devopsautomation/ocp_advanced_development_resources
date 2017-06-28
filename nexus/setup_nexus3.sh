@@ -89,6 +89,6 @@ EOM
 add_nexus3_proxy_repo redhat-ga https://maven.repository.redhat.com/ga/ $1 $2 $3
 add_nexus3_proxy_repo jboss https://repository.jboss.org/nexus/content/groups/public/ $1 $2 $3
 
-add_nexus3_group_repo redhat-ga,jboss,maven-central,maven-releases,maven-snapshots maven-all-public $1 $2 $3
+add_nexus3_group_proxy_repo redhat-ga,jboss,maven-central,maven-releases,maven-snapshots maven-all-public $1 $2 $3
 
 add_nexus3_release_repo releases $1 $2 $3
