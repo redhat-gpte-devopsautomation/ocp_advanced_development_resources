@@ -40,17 +40,26 @@ node('maven') {
 
   // Publish the latest war file to Nexus. This needs to go into <nexusurl>/repository/releases.
   // Using the properties from the pom.xml file construct a filename that includes the version number from the pom.xml file
-  // Also update the Gogs project openshift-tasks-ocp by editing the .s2i/environment file. This file needs to have a line
+  //
+  // You now have two options: Either binary build (streaming the war file into a binary build) or build with external artifacts.
+  // If you are unclear which path to follow ask your instructor.
+  // 
+  // When doing a binary build you are done.
+  // 
+  // When doing a build with external artifacts (not binary build) you will also need to do the following:
+  // - Update the Gogs project openshift-tasks-ocp by editing the .s2i/environment file. This file needs to have a line
   //   WAR_FILE_LOCATION=<actual URL of the war file in nexus>
-  // It is also a good idea to add another line like "BUILD_NUMBER=${BUILD_NUMBER}" to the environment file. Otherwise the
-  // push to Gig/Gogs will fail in case the version number didn't change. ${BUILD_NUMBER} is one of the Jenkins built-in
-  // variables.
+  // - It is also a good idea to add another line like "BUILD_NUMBER=${BUILD_NUMBER}" to the environment file. Otherwise the
+  //   push to Gig/Gogs will fail in case the version number didn't change. ${BUILD_NUMBER} is one of the Jenkins built-in
+  //   variables.
   stage('Publish to Nexus') {
     // TBD
   }
 
-  // Build the OpenShift Image in OpenShift. Make sure to use the build configuration pointing to openshift-tasks-ocp
-  // for the .s2i/bin/assemble script to retrieve the war file from the location in the .s2i/environment file.
+  // Build the OpenShift Image in OpenShift. 
+  // 1. When doing a binary build make sure to rename the file ./target/openshift-tasks.war to ROOT.war before you start the build.
+  // 2. When doing a build with external artifacts make sure to use the build configuration pointing to openshift-tasks-ocp
+  //    for the .s2i/bin/assemble script to retrieve the war file from the location in the .s2i/environment file.
   // Also tag the image with "TestingCandidate-${version}" - e.g. TestingCandidate-1.5
   stage('Build OpenShift Image') {
     // TBD
