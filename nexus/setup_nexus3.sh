@@ -134,10 +134,11 @@ EOM
 
 # Red Hat Proxy Repos
 add_nexus3_proxy_repo redhat-ga https://maven.repository.redhat.com/ga/ $1 $2 $3
-add_nexus3_proxy_repo jboss https://repository.jboss.org/nexus/content/groups/public/ $1 $2 $3
+#add_nexus3_proxy_repo jboss https://repository.jboss.org/nexus/content/groups/public/ $1 $2 $3
 
 # Repo Group to include all proxy repos
-add_nexus3_group_proxy_repo redhat-ga,jboss,maven-central,maven-releases,maven-snapshots maven-all-public $1 $2 $3
+#add_nexus3_group_proxy_repo redhat-ga,jboss,maven-central,maven-releases,maven-snapshots maven-all-public $1 $2 $3
+add_nexus3_group_proxy_repo redhat-ga,maven-central,maven-releases,maven-snapshots maven-all-public $1 $2 $3
 
 # NPM Proxy Repo
 add_nexus3_npmproxy_repo npm https://registry.npmjs.org/ $1 $2 $3
